@@ -1,35 +1,4 @@
-<!DOCTYPE HTML>
-<html> 
-    <head> 
-        <title>LemonGaming</title> 
-        <meta charset="utf-8"> 
-        <meta name="author" content="D.Tharun"> 
-        <meta name="description" content="Lemon Gaming is a gaming website that has great, free-to-play and ad-free games">
-        <style>  
-            #header {  
-                background: rgba(0, 0, 0, 1);
-                color: rgba(255, 235, 0, 1); 
-                font-family:"Helvetica" "sans-serif" ;
-                margin: 0%;
-                border: 0%;
-                padding: 1.5%;
-                
-                } 
-            p { 
-                font-family:"Helvetica" "serif";
-                }
-        </style>
-    </head> 
-    <body> 
-        <h1 id="header" align = "center">Lemon Gaming 🍋</h1> 
-        <p align = "center"> 
-            Under development
-        </p> 
-        <canvas id="myCanvas" width="600" height="600" style="border:solid black 1px;">
-            Your browser does not support canvas element.
-        </canvas>
-        <script> 
-            var canvas = document.getElementById("myCanvas");
+var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var ballRadius = 10;
 var x = canvas.width/2;
@@ -196,6 +165,3 @@ function draw() {
 }
 
 draw()
-        </script>
-    </body>
-</html> 
