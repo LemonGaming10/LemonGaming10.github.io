@@ -9,8 +9,12 @@
                 margin: 0%;
                 border: 0%;
                 padding: 0.5%;
-                
+                position: fixed;
+                top: 0%;
                 } 
             p { 
                 font-family:"Nunito", sans-serif ;
+                position: absolute;
+                top: 10%
+                padding: 5%;
                 }
