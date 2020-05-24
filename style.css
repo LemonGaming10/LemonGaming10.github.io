@@ -1,20 +1,29 @@
 * {  
-                margin: 0px;
-                padding: 0px;
-              }
-            #header {  
-                background: rgba(0, 0, 0, 1);
-                color: rgba(255, 235, 0, 1); 
-                font-family:"Nunito", sans-serif ;
-                margin: 0%;
-                border: 0%;
-                padding: 0.5% 50% 0.5% 50%;
-                position: fixed;
-                top: 0%;
-                } 
-            p { 
-                font-family:"Nunito", sans-serif ;
-                position: absolute;
-                top: 10%
-                padding: 5%;
-                }
+   margin: 0px;
+   padding: 0px;
+   }
+#header {  
+   background: rgba(0, 0, 0, 1);
+   color: rgba(255, 235, 0, 1); 
+   font-family:"Nunito", sans-serif ;
+   margin: 0%;
+   border: 0%;
+   padding: 0.5% 50% 0.5% 50%;
+   position: fixed;
+   top: 0%;
+   } 
+.navtools {
+    color: rgba(230, 230, 230, 1); 
+    font-family:"Nunito", sans-serif ;
+    position: absolute;
+    top: 1.0%;
+    }
+#nav_games {
+     position: absolute;
+     left: 20%;
+     }
+#nav_coding {
+      position: absolute;
+      left: 40%;
+      }         
+                          
