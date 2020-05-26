@@ -11,11 +11,13 @@
    padding: 0.5% 50% 0.5% 50%;
    position: fixed;
    top: 0%;
+   z-index: 10;
 } 
 #headingbg1 {
     position: initial;
     padding: 5% 0% 5% 0%;
     width: 100%;
+    z-index: 1;
 }
 #heading1 {
     position: absolute;
@@ -25,6 +27,7 @@
     color: rgba(255, 255, 255, 1); 
     font-size: xxx-large;
     font-family: "Nunito", sans-serif ;
+    z-index: 1;
 }
 #para1 {
     position: absolute;
@@ -35,6 +38,7 @@
     color: rgba(255, 255, 255, 1); 
     font-size: x-large;
     font-family: "Nunito", sans-serif ;
+    z-index: 1;
 }
 }
 }
@@ -43,13 +47,16 @@
     font-family:"Nunito", sans-serif;
     position: absolute;
     top: 1.0%;
+    z-index: 10;
 }
 #nav_games {
      position: absolute;
      left: 20%;
+     z-index: 10;
 }
 #nav_coding {
       position: absolute;
       left: 40%;
+      z-index: 10;
 }         
                           
