@@ -2,6 +2,13 @@
    margin: 0px;
    padding: 0px;
 }
+a {
+   text-decoration: none;
+   color: rgb(0, 199, 255);
+}
+a:hover {
+    color: rgba(0, 199, 255, 0.5);
+}
 #header {  
    background: rgba(0, 0, 0, 1);
    color: rgba(255, 235, 0, 1); 
@@ -38,6 +45,15 @@
     color: rgba(255, 255, 255, 1); 
     font-size: 2em;
     font-family: "Nunito", sans-serif ;
+    z-index: 1;
+}
+#link1 {
+    position: relative;
+    top: 130px;
+    padding-left: 5%;
+    padding-top: 10%;
+    font-family: "Nunito", sans-serif ;
+    font-size: 2em;
     z-index: 1;
 }
 .navtools {
