@@ -139,8 +139,7 @@ function draw() {
     else {
       lives--;
       if(!lives) {
-        alert("GAME OVER");
-        document.location.reload();
+       
       }
       else {
         x = canvas.width/2;
