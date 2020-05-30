@@ -24,6 +24,7 @@
            var height = canvas.height = window.innerHeight;
            var width = canvas.width = height*0.75;
            var ctx = canvas.getContext('2d');
+           var score = 0;
            var cubecolors=[
              'rgb(80, 80, 255)',
              'rgb(153, 12, 235)',
@@ -31,8 +32,15 @@
              'rgb(242, 19, 138)'
            ];
            var cubes = [];
+           ctx.font = "1em serif";
            function random(min, max) {
               return Math.floor(Math.random() * (max - min) ) + min;
+           }
+           function displayscore() {
+               score+=cubes[0].speed;
+               ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+               ctx.fillText('Score:', 0, 20);
+               ctx.fillText(Math.round(score), 0, 40);
            }
            function Cube(x, y, col) {
               this.x=x;
@@ -72,6 +80,7 @@
                     cubes[i].x = Math.floor(random(0, (width-20)));
                  }
               }
+              displayscore();
               requestAnimationFrame(draw);
            }
            draw();
