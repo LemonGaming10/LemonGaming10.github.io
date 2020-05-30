@@ -3,14 +3,69 @@
     <head> 
         <title>LemonGaming</title> 
         <meta charset="utf-8"> 
-        <meta name="author" content="D.Tharun"> 
-        <meta name="description" content="Lemon Gaming is a gaming website that has great, free-to-play and ad-free games">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+        <style> 
+           body {
+             margin: 0;
+             overflow: hidden;
+             }
+           .myCanvas {
+             position: absolute;
+             left:25%;
+             
+             }
+        </style>
     </head> 
     <body>
-        <canvas id="myCanvas" width=400px height=400px> </canvas>
+        <canvas class="myCanvas">
+           <p>Add suitable fallback here.</p>
+        </canvas>
         <script>
+           var canvas = document.querySelector('.myCanvas');
+           var height = canvas.height = window.innerHeight;
+           var width = canvas.width = height*0.75;
+           var ctx = canvas.getContext('2d');
+           var cubecolors=[
+             'rgb(80, 80, 255)',
+             'rgb(153, 12, 235)',
+             'rgb(23, 227, 4)',
+             'rgb(242, 19, 138)'
+           ];
+           var cubes = [];
+           function random(min, max) {
+              return Math.floor(Math.random() * (max - min) ) + min;
+           }
+           function Cube(x, y, col) {
+              this.x=x;
+              this.y=y;
+              this.col=col;
+              this.size= 20;
+           }
+           Cube.prototype.display = function() {
+              ctx.fillStyle = this.col;
+              ctx.fillRect(this.x, this.y, this.size, this.size);
+           };
+           Cube.prototype.update = function() {
+              this.y++;
+           };
+           
+           for(var i=0; i<100; i++) {
+              var col = Math.floor(Math.random()*4);
+              var x= Math.floor(Math.random()*(width-20));
+              var y= Math.floor(random(0, 2400));
+              cubes.push(new Cube(x, y, cubecolors[col]));
+           }
+           function draw() {
+              ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+              ctx.fillRect(0, 0, width, height);
+              for(var i = 0; i<cubes.length; i++) {
+                 cubes[i].display();
+                 cubes[i].update();
+              }
+              requestAnimationFrame(draw);
+           }
+           draw();
         </script>
 
     </body>
 </html>
+
