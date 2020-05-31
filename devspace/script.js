@@ -24,7 +24,7 @@
            var time = 0;
            var canvas = document.querySelector('.myCanvas');
            var height = canvas.height = window.innerHeight;
-           var width = canvas.width = height*0.75;
+           var width = canvas.width = height*9/16;
            var ctx = canvas.getContext('2d');
            var score = 0;
            var x;
@@ -119,7 +119,8 @@
                     var col = Math.floor(Math.random()*4);
                     var x= Math.floor(random(0, (width-20)));
                     var y= Math.floor(random(-2.5*height, height));
-                    cubes.push(new Cube(x, y, cubecolors[col])); 
+                    cubes.push(new Cube(x, y, cubecolors[col]));
+                    canvas.removeEventListener('click', resetGame);
                     }
            }
            function draw() {
@@ -144,7 +145,8 @@
                  displayscore();
               }
               else {
-                 endScreen();
+                 endScreen(); 
+                 cancelAnimationFrame(draw);
                  canvas.addEventListener('click', resetGame);               
               }
                     
