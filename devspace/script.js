@@ -3,6 +3,7 @@
     <head> 
         <title>LemonGaming</title> 
         <meta charset="utf-8"> 
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&amp;display=swap" rel="stylesheet">
         <style> 
            body {
              margin: 0;
@@ -20,12 +21,14 @@
            <p>Add suitable fallback here.</p>
         </canvas>
         <script>
+           var time = 0;
            var canvas = document.querySelector('.myCanvas');
            var height = canvas.height = window.innerHeight;
            var width = canvas.width = height*0.75;
            var ctx = canvas.getContext('2d');
            var score = 0;
            var x;
+           var speed = 3;
            var cubecolors=[
              'rgb(80, 80, 255)',
              'rgb(153, 12, 235)',
@@ -33,15 +36,15 @@
              'rgb(242, 19, 138)'
            ];
            var cubes = [];
-           ctx.font = "1em serif";
+           ctx.font = "1em Nunito";
            function random(min, max) {
               return Math.floor(Math.random() * (max - min) ) + min;
            }
-           function dist(x1, x2, y1, y2) {
+           function dist(x1, y1, x2, y2) {
               return Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
            }
            function displayscore() {
-               score+=cubes[0].speed;
+               score+=speed;
                ctx.fillStyle = 'rgba(0, 0, 0, 1)';
                ctx.fillText('Score:', width/12, height/12);
                ctx.fillText(Math.round(score), width/12, (height/12)+20);
@@ -58,14 +61,11 @@
               ctx.fillRect(this.x, this.y, this.size, this.size);
            };
            Cube.prototype.update = function() {
-              this.y+=this.speed;
-              if(this.speed<6.5) {
-              this.speed+=0.001;
+              this.y+=speed;
+              if(speed<6.5) {
+              speed+=0.001;
               }
            };
-           Cube.prototype.broadPhase = function() {
-              //return 
-           }
            function Ball() {
               this.x = width/2;
               this.y = height*0.9;
@@ -75,15 +75,20 @@
            Ball.prototype.display = function() {
               ctx.beginPath();
               ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI, true);
-              ctx.fillStyle ='rgba(255, 0, 0, 1)';
+              ctx.fillStyle ='rgba(255, 0, 0, ' + time/100 + ')';
               ctx.fill();
               ctx.closePath();
            };
            var player = new Ball();
+           Cube.prototype.detectCollision = function() {
+              if(dist(this.x, this.y, player.x, player.y)<13 || dist(this.x+this.size, this.y, player.x, player.y)<13 || dist(this.x, this.y+this.size, player.x, player.y)<13 || dist(this.x+this.size, this.y+this.size, player.x, player.y)<13) {
+                 player.out = true;
+              }
+           }
            for(var i=0; i<25; i++) {
               var col = Math.floor(Math.random()*4);
               var x= Math.floor(random(0, (width-20)));
-              var y= Math.floor(random(-1250, 300));
+              var y= Math.floor(random(-2.5*height, height));
               cubes.push(new Cube(x, y, cubecolors[col]));
            }
            function updateBall(event) {
@@ -92,21 +97,59 @@
                 player.x = x;
              }
            }
+           function endScreen() {
+              ctx.fillStyle = 'rgba(230, 230, 230, 0.75)';
+              ctx.fillRect(0, 0, width, height);
+              ctx.textAlign = 'center';
+              ctx.textFont = '200px Nunito'
+              ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+              ctx.fillText('Out', width/2, height/10);
+              ctx.fillText('Score: ' + Math.floor(score), width/2, height/10 + 20);
+              ctx.fillText('Click to Restart', width/2, height/10 + 80);
+           }
            canvas.addEventListener('mousemove', updateBall);
            function draw() {
               ctx.fillStyle = 'rgba(230, 230, 230, 1)';
               ctx.fillRect(0, 0, width, height);
+              time++;
+              
+              
               for(var i = 0; i<cubes.length; i++) {
                  cubes[i].display();
-                 cubes[i].update();  
+                 
+                 cubes[i].update(); 
+                 if(time>100) {
+                 cubes[i].detectCollision();
+                 }
                  if(cubes[i].y>height+cubes[0].size) {
-                    cubes[i].y = -1250;
+                    cubes[i].y = -2.5*height;
                     cubes[i].x = Math.floor(random(0, (width-20)));
                  }
               }
               player.display();
-              displayscore();
-              requestAnimationFrame(draw);
+              if(!player.out){
+                 requestAnimationFrame(draw);
+                 displayscore();
+              }
+              else {
+                 endScreen();
+                 canvas.addEventListener('click', function() {
+                    player.out = false;
+                    requestAnimationFrame(draw);
+                    time = 0;
+                    score = 0;
+                    cubes = [];
+                    speed = 3;
+                    for(var i=0; i<25; i++) {
+                      var col = Math.floor(Math.random()*4);
+                      var x= Math.floor(random(0, (width-20)));
+                      var y= Math.floor(random(-2.5*height, height));
+                      cubes.push(new Cube(x, y, cubecolors[col]));
+                      
+                    }
+                    
+                 });
+              }
            }
            draw();
         </script>
