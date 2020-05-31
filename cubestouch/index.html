@@ -43,7 +43,7 @@
               this.x=x;
               this.y=y;
               this.col=col;
-              this.size= 20;
+              this.size= width/15;
               this.speed= 3;
            }
            Cube.prototype.display = function() {
@@ -59,7 +59,7 @@
            function Ball() {
               this.x = width/2;
               this.y = height*0.9;
-              this.radius = 12.5;
+              this.radius = width/23;
               this.out = false;
            }
            Ball.prototype.display = function() {
@@ -71,7 +71,7 @@
            };
            var player = new Ball();
            Cube.prototype.detectCollision = function() {
-              if(dist(this.x, this.y, player.x, player.y)<13 || dist(this.x+this.size, this.y, player.x, player.y)<13 || dist(this.x, this.y+this.size, player.x, player.y)<13 || dist(this.x+this.size, this.y+this.size, player.x, player.y)<13) {
+              if(dist(this.x, this.y, player.x, player.y)<player.radius || dist(this.x+this.size, this.y, player.x, player.y)<player.radius || dist(this.x, this.y+this.size, player.x, player.y)<player.radius || dist(this.x+this.size, this.y+this.size, player.x, player.y)<player.radius) {
                  player.out = true;
               }
            }
@@ -83,7 +83,7 @@
            }
            function updateBall(event) {
               x = event.touches[0].clientX - canvas.offsetLeft;
-             if(x > 12 && x < (canvas.width-12)) {
+             if(x > player.radius && x < (canvas.width-player.radius)) {
                 player.x = x;
              }
            }
