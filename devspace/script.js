@@ -108,12 +108,24 @@
               ctx.fillText('Click to Restart', width/2, height/10 + 80);
            }
            canvas.addEventListener('mousemove', updateBall);
+           function resetGame() {
+                   player.out = false;
+                    requestAnimationFrame(draw);
+                    time = 0;
+                    score = 0;
+                    cubes = [];
+                    speed = 3;
+                    for(var i=0; i<25; i++) {
+                    var col = Math.floor(Math.random()*4);
+                    var x= Math.floor(random(0, (width-20)));
+                    var y= Math.floor(random(-2.5*height, height));
+                    cubes.push(new Cube(x, y, cubecolors[col])); 
+                    }
+           }
            function draw() {
               ctx.fillStyle = 'rgba(230, 230, 230, 1)';
               ctx.fillRect(0, 0, width, height);
               time++;
-              
-              
               for(var i = 0; i<cubes.length; i++) {
                  cubes[i].display();
                  
@@ -133,24 +145,13 @@
               }
               else {
                  endScreen();
-                 canvas.addEventListener('click', function() {
-                    player.out = false;
-                    requestAnimationFrame(draw);
-                    time = 0;
-                    score = 0;
-                    cubes = [];
-                    speed = 3;
-                    for(var i=0; i<25; i++) {
-                      var col = Math.floor(Math.random()*4);
-                      var x= Math.floor(random(0, (width-20)));
-                      var y= Math.floor(random(-2.5*height, height));
-                      cubes.push(new Cube(x, y, cubecolors[col]));
-                      
-                    }
-                    
-                 });
+                 canvas.addEventListener('click', resetGame);               
               }
-           }
+                    
+            };
+                 
+              
+           
            draw();
         </script>
 
