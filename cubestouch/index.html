@@ -82,7 +82,7 @@
               cubes.push(new Cube(x, y, cubecolors[col]));
            }
            function updateBall(event) {
-              x = event.clientX - canvas.offsetLeft;
+              x = event.touches[0].clientX - canvas.offsetLeft;
              if(x > 12 && x < (canvas.width-12)) {
                 player.x = x;
              }
