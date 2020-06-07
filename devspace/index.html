@@ -59,8 +59,9 @@ function dist(x1, y1, x2, y2) {
            ctx.fillRect(0, 0, 3840, 2160);
            function Player(x, y, col) {
               this.position = new PVector(x, y);
+              this.
               this.col = col;
-              this.angle = Math.PI*3;
+              this.angle = Math.PI;
            }
            Player.prototype.display = function() {
               ctx.lineCap = 'round';
@@ -73,12 +74,18 @@ function dist(x1, y1, x2, y2) {
               ctx.lineWidth = 20;
               ctx.moveTo(this.position.x, this.position.y);
               ctx.lineTo(this.position.x, this.position.y+150);
-              ctx.lineTo(this.position.x+Math.sin(this.angle)*40, this.position.y+300);
+              ctx.lineTo(this.position.x+(Math.sin(this.angle))*60, this.position.y+300);
               ctx.moveTo(this.position.x, this.position.y+150);
-              ctx.lineTo(this.position.x-40, this.position.y+300);
+              ctx.lineTo(this.position.x-(Math.sin(this.angle))*60, this.position.y+300);
+              ctx.moveTo(this.position.x, this.position.y+80);
+              ctx.lineTo(this.position.x-(Math.sin((this.angle+(Math.PI/2))/1.5)*60), this.position.y+180);
+              ctx.moveTo(this.position.x, this.position.y+80);
+              ctx.lineTo(this.position.x+(Math.sin((this.angle+(Math.PI/2))/1.5)*60), this.position.y+180);
               ctx.stroke();
               ctx.closePath();
-              
+           };
+           Player.prototype.update = function() {
+              this.angle+=0.15;
            };
            function updateCoords(event) {
               mouseX = Math.floor((event.clientX - canvas.offsetLeft)*                   (3840/width));
@@ -86,14 +93,23 @@ function dist(x1, y1, x2, y2) {
            }
            canvas.addEventListener('mousemove', updateCoords);
            var player1 = new Player(200, 200, 'rgb(0, 0, 255)');
+           var player2 = new Player(200, 800, 'rgb(0, 255, 0)');
+           var player3 = new Player(200, 1400, 'rgb(255, 0, 0)');
+           var players =[
+              player1,
+              player2,
+              player3
+           ];
            function main() {
-           ctx.clearRect(0, 0, 3840, 2160);
-           player1.display();
+           ctx.fillStyle = 'rgb(240, 240, 240)';
+           ctx.fillRect(0, 0, 3840, 2160);
+           for(var i = 0; i < players.length; i++) {
+              players[i].display();
+              players[i].update();
+           }
            requestAnimationFrame(main);
            }
            main();
         </script>
-
     </body>
 </html>
->
