@@ -60,6 +60,7 @@ function dist(x1, y1, x2, y2) {
            function Player(x, y, col) {
               this.position = new PVector(x, y);
               this.col = col;
+              this.angle = Math.PI*3;
            }
            Player.prototype.display = function() {
               ctx.lineCap = 'round';
@@ -72,7 +73,7 @@ function dist(x1, y1, x2, y2) {
               ctx.lineWidth = 20;
               ctx.moveTo(this.position.x, this.position.y);
               ctx.lineTo(this.position.x, this.position.y+150);
-              ctx.lineTo(this.position.x+40, this.position.y+300);
+              ctx.lineTo(this.position.x+Math.sin(this.angle)*40, this.position.y+300);
               ctx.moveTo(this.position.x, this.position.y+150);
               ctx.lineTo(this.position.x-40, this.position.y+300);
               ctx.stroke();
