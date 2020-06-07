@@ -3,89 +3,96 @@
     <head> 
         <title>LemonGaming</title> 
         <meta charset="utf-8"> 
-        <style> 
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&amp;display=swap" rel="stylesheet">
+        <script src = 'https://lemongaming10.github.io/minilib/script.js'>
+        </script>
+        <style>
            body {
              margin: 0;
              overflow: hidden;
              }
-           .myCanvas {
+           canvas {
+             padding: 0;
+             margin: auto;
+             display: block;
+             width: 100%;
              position: absolute;
-             left:25%;
-             
+             top: 0;
+             bottom: 0;
+             left: 0;
+             right: 0;
              }
+
         </style>
+    </head>
     </head> 
     <body>
-        <canvas class="myCanvas">
-           <p>Add suitable fallback here.</p>
+        <canvas class="myCanvas" width = 3840px height = 2160px>
+           <p>Please check if your browser supports canvas and javascript.</p>
         </canvas>
         <script>
            var canvas = document.querySelector('.myCanvas');
-           var height = canvas.height = window.innerHeight;
-           var width = canvas.width = height*0.75;
            var ctx = canvas.getContext('2d');
-           var score = 0;
-           var cubecolors=[
-             'rgb(80, 80, 255)',
-             'rgb(153, 12, 235)',
-             'rgb(23, 227, 4)',
-             'rgb(242, 19, 138)'
-           ];
-           var cubes = [];
-           ctx.font = "1em serif";
-           function random(min, max) {
-              return Math.floor(Math.random() * (max - min) ) + min;
+           var height = window.innerWidth*(9/16);
+           var width = window.innerWidth;
+           var mouseX = 0;
+           var mouseY = 0;
+function PVector(x, y) {
+     this.x = x;
+     this.y = y;
+}
+PVector.prototype.add = function(v) {
+    this.x+= v.x;
+    this.y+= v.y;
+};
+PVector.prototype.mult = function(v) {
+     this.x = this.x*v;
+     this.y= this.y*v;
+};  
+function random(min, max) {
+     return Math.floor(Math.random() * (max - min) ) + min;
+}
+function dist(x1, y1, x2, y2) {
+     return Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
+}
+           ctx.fillStyle = 'rgba(230, 230, 230, 1)';
+           ctx.fillRect(0, 0, 3840, 2160);
+           function Player(x, y, col) {
+              this.position = new PVector(x, y);
+              this.col = col;
            }
-           function displayscore() {
-               score+=cubes[0].speed;
-               ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-               ctx.fillText('Score:', 0, 20);
-               ctx.fillText(Math.round(score), 0, 40);
-           }
-           function Cube(x, y, col) {
-              this.x=x;
-              this.y=y;
-              this.col=col;
-              this.size= 20;
-              this.speed= 3;
-           }
-           Cube.prototype.display = function() {
+           Player.prototype.display = function() {
+              ctx.lineCap = 'round';
+              ctx.beginPath();
+              ctx.lineWidth = 0;
+              ctx.arc(this.position.x, this.position.y, 50, 0, 2*Math.PI,                 true);
               ctx.fillStyle = this.col;
-              ctx.fillRect(this.x, this.y, this.size, this.size);
+              ctx.fill();
+              ctx.strokeStyle = this.col;
+              ctx.lineWidth = 20;
+              ctx.moveTo(this.position.x, this.position.y);
+              ctx.lineTo(this.position.x, this.position.y+150);
+              ctx.lineTo(this.position.x+40, this.position.y+300);
+              ctx.moveTo(this.position.x, this.position.y+150);
+              ctx.lineTo(this.position.x-40, this.position.y+300);
+              ctx.stroke();
+              ctx.closePath();
+              
            };
-           Cube.prototype.update = function() {
-              this.y+=this.speed;
-              if(this.speed<5) {
-              this.speed+=0.01;
-              }
-           };
-           Cube.prototype.isgone = function() {
-              return this.y>(1000);
-           };
-           
-           for(var i=0; i<100; i++) {
-              var col = Math.floor(Math.random()*4);
-              var x= Math.floor(random(0, (width-20)));
-              var y= Math.floor(random(-5050, 300));
-              cubes.push(new Cube(x, y, cubecolors[col]));
+           function updateCoords(event) {
+              mouseX = Math.floor((event.clientX - canvas.offsetLeft)*                   (3840/width));
+              mouseY = Math.floor((event.clientY - canvas.offsetTop)*                     (2160/height));
            }
-           function draw() {
-              ctx.fillStyle = 'rgba(255, 255, 255, 1)';
-              ctx.fillRect(0, 0, width, height);
-              for(var i = 0; i<cubes.length; i++) {
-                 cubes[i].display();
-                 cubes[i].update();  
-                 if(cubes[i].y>height+20) {
-                    cubes[i].y = -5050;
-                    cubes[i].x = Math.floor(random(0, (width-20)));
-                 }
-              }
-              displayscore();
-              requestAnimationFrame(draw);
+           canvas.addEventListener('mousemove', updateCoords);
+           var player1 = new Player(200, 200, 'rgb(0, 0, 255)');
+           function main() {
+           ctx.clearRect(0, 0, 3840, 2160);
+           player1.display();
+           requestAnimationFrame(main);
            }
-           draw();
+           main();
         </script>
 
     </body>
 </html>
-
+>
