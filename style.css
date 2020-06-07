@@ -50,8 +50,8 @@ a:hover {
 #link1 {
     position: relative;
     top: 130px;
-    padding-left: 5%;
-    padding-top: 10%;
+    margin-left: 5%;
+    margin-top: 10%;
     font-family: "Nunito", sans-serif ;
     font-size: 2em;
     z-index: 1;
@@ -59,8 +59,8 @@ a:hover {
 #link2 {
     position: relative;
     top: 130px;
-    padding-left: 5%;
-    padding-top: 10%;
+    margin-left: 5%;
+    margin-top: 10%;
     font-family: "Nunito", sans-serif ;
     font-size: 2em;
     z-index: 1;
