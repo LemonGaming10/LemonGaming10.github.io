@@ -40,10 +40,20 @@
 function PVector(x, y) {
      this.x = x;
      this.y = y;
+     this.limit.x = 100;
+     this.limit.y = 100;
 }
+PVector.prototype.limit = function(x, y) {
+    this.limit.x = x;
+    this.limit.y = y;
+};
 PVector.prototype.add = function(v) {
-    this.x+= v.x;
+    if(this.x<this.limit.x) {
+       this.x+= v.x;
+    }
+    if(this.y<this.limit.y) {
     this.y+= v.y;
+    }
 };
 PVector.prototype.mult = function(v) {
      this.x = this.x*v;
@@ -59,7 +69,6 @@ function dist(x1, y1, x2, y2) {
            ctx.fillRect(0, 0, 3840, 2160);
            function Player(x, y, col) {
               this.position = new PVector(x, y);
-              
               this.col = col;
               this.angle = Math.PI;
            }
@@ -86,7 +95,8 @@ function dist(x1, y1, x2, y2) {
            };
            Player.prototype.update = function() {
               this.angle+=0.15;
-             // this.position.x
+              this.position.limit(3, 3);
+              this.position.add(0.01, 0.01);
            };
            function updateCoords(event) {
               mouseX = Math.floor((event.clientX - canvas.offsetLeft)*                   (3840/width));
