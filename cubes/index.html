@@ -12,14 +12,15 @@
            <p>Add suitable fallback here.</p>
         </canvas>
         <script>
-           var time = 0;
            var canvas = document.querySelector('.myCanvas');
            var height = canvas.height = window.innerHeight;
            var width = canvas.width = height*9/16;
            var ctx = canvas.getContext('2d');
+           var time = 0;
            var score = 0;
            var x;
-           var speed = 3;
+           var y;
+           var speed = height/120;
            var cubecolors=[
              'rgb(80, 80, 255)',
              'rgb(153, 12, 235)',
@@ -53,13 +54,13 @@
            };
            Cube.prototype.update = function() {
               this.y+=speed;
-              if(speed<6.5) {
-              speed+=0.001;
+              if(speed<height*0.015) {
+              speed+=0.0001;
               }
            };
            function Ball() {
               this.x = width/2;
-              this.y = height*0.9;
+              this.y = height*0.8;
               this.radius = 12.5;
               this.out = false;
            }
@@ -76,7 +77,7 @@
                  player.out = true;
               }
            }
-           for(var i=0; i<25; i++) {
+           for(var i=0; i<20; i++) {
               var col = Math.floor(Math.random()*4);
               var x= Math.floor(random(0, (width-20)));
               var y= Math.floor(random(-2.5*height, height));
@@ -89,7 +90,7 @@
              }
            }
            function endScreen() {
-              ctx.fillStyle = 'rgba(230, 230, 230, 0.75)';
+              ctx.fillStyle = 'rgba(240, 240, 240, 0.75)';
               ctx.fillRect(0, 0, width, height);
               ctx.textAlign = 'center';
               ctx.textFont = '200px Nunito'
@@ -115,7 +116,7 @@
                     }
            }
            function draw() {
-              ctx.fillStyle = 'rgba(230, 230, 230, 1)';
+              ctx.fillStyle = 'rgba(245, 245, 245, 1)';
               ctx.fillRect(0, 0, width, height);
               time++;
               for(var i = 0; i<cubes.length; i++) {
@@ -126,8 +127,8 @@
                  cubes[i].detectCollision();
                  }
                  if(cubes[i].y>height+cubes[0].size) {
-                    cubes[i].y = -2.5*height;
-                    cubes[i].x = Math.floor(random(0, (width-20)));
+                    cubes[i].y = (-2.5*height);
+                    cubes[i].x = Math.floor(random(0, (width-(cubes[0].size))));
                  }
               }
               player.display();
