@@ -60,7 +60,7 @@
               this.y=y;
               this.col=col;
               this.size= width/18;
-              this.speed= width/20;
+              this.speed= width/30;
            }
            Cube.prototype.display = function() {
               ctx.fillStyle = this.col;
@@ -68,7 +68,7 @@
            };
            Cube.prototype.update = function() {
               this.y+=speed;
-              if(speed<height*0.015) {
+              if(speed<height*0.013) {
               speed+=height/1000;
               }
            };
