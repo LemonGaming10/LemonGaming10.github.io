@@ -60,7 +60,7 @@
               this.y=y;
               this.col=col;
               this.size= width/18;
-              this.speed= width/30;
+              this.speed= width/500;
            }
            Cube.prototype.display = function() {
               ctx.fillStyle = this.col;
@@ -68,7 +68,7 @@
            };
            Cube.prototype.update = function() {
               this.y+=speed;
-              if(speed<height*0.013) {
+              if(speed<width/100) {
               speed+=height/1000;
               }
            };
@@ -118,9 +118,9 @@
                    player.out = false;
                     requestAnimationFrame(draw);
                     time = 0;
-                    score = 0
+                    score = 0;
                     cubes = [];
-                    speed = 3;
+                    speed = 0;
                     for(var i=0; i<25; i++) {
                     var col = Math.floor(Math.random()*4);
                     var x= Math.floor(random(0, (width-20)));
