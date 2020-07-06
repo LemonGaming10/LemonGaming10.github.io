@@ -4,7 +4,21 @@
         <title>LemonGaming</title> 
         <meta charset="utf-8"> 
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&amp;display=swap" rel="stylesheet">
-        <link href="style.css" rel="stylesheet" type="text/css">
+        <style>
+            body {
+             margin: 0;
+             overflow: hidden;
+             }
+           canvas { 
+             padding-left: 0;
+             padding-right: 0;
+             margin-left: auto;
+             margin-right: auto;
+             display: block;
+             cursor: -webkit-grab; cursor: grab;
+             }
+
+        </style>
     </head>
     </head> 
     <body>
@@ -20,7 +34,7 @@
            var score = 0;
            var x;
            var y;
-           var speed = height/120;
+           var speed = height/60;
            var cubecolors=[
              'rgb(80, 80, 255)',
              'rgb(153, 12, 235)',
@@ -38,15 +52,15 @@
            function displayscore() {
                score+=speed;
                ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-               ctx.fillText('Score:', width/12, height/12);
-               ctx.fillText(Math.round(score), width/12, (height/12)+20);
+               ctx.fillText('Score:', width/10, height/10);
+               ctx.fillText(Math.round(score), width/10, (height/10)+20);
            }
            function Cube(x, y, col) {
               this.x=x;
               this.y=y;
               this.col=col;
-              this.size= 20;
-              this.speed= 3;
+              this.size= width/18;
+              this.speed= width/20;
            }
            Cube.prototype.display = function() {
               ctx.fillStyle = this.col;
@@ -55,13 +69,13 @@
            Cube.prototype.update = function() {
               this.y+=speed;
               if(speed<height*0.015) {
-              speed+=0.0001;
+              speed+=height/1000;
               }
            };
            function Ball() {
               this.x = width/2;
               this.y = height*0.8;
-              this.radius = 12.5;
+              this.radius = width/32;
               this.out = false;
            }
            Ball.prototype.display = function() {
@@ -73,7 +87,7 @@
            };
            var player = new Ball();
            Cube.prototype.detectCollision = function() {
-              if(dist(this.x, this.y, player.x, player.y)<13 || dist(this.x+this.size, this.y, player.x, player.y)<13 || dist(this.x, this.y+this.size, player.x, player.y)<13 || dist(this.x+this.size, this.y+this.size, player.x, player.y)<13) {
+              if(dist(this.x, this.y, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y, player.x, player.y)<((player.radius)) || dist(this.x, this.y+this.size, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y+this.size, player.x, player.y)<((player.radius))) {
                  player.out = true;
               }
            }
@@ -104,7 +118,7 @@
                    player.out = false;
                     requestAnimationFrame(draw);
                     time = 0;
-                    score = 0;
+                    score = 0
                     cubes = [];
                     speed = 3;
                     for(var i=0; i<25; i++) {
