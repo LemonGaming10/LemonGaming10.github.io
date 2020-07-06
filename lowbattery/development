@@ -30,7 +30,29 @@
             var height = canvas.height = window.innerHeight;
             var width = canvas.width = height*9/16;
             var ctx = canvas.getContext('2d');
-            
+            function roundedRect(ctx, x, y, width, height, radius) {
+                ctx.beginPath();
+                ctx.moveTo(x, y + radius);
+                ctx.lineTo(x, y + height - radius);
+                ctx.arcTo(x, y + height, x + radius, y + height, radius);
+                ctx.lineTo(x + width - radius, y + height);
+                ctx.arcTo(x + width, y + height, x + width, y + height-radius, radius);
+                ctx.lineTo(x + width, y + radius);
+                ctx.arcTo(x + width, y, x + width - radius, y, radius);
+                ctx.lineTo(x + radius, y);
+                ctx.arcTo(x, y, x, y + radius, radius);
+                ctx.stroke();
+}
+            function Button(x, y, col) {
+                this.x = x;
+                this.y = y;
+                this.col = col;
+            }
+            Button.prototype.display = function() {
+                ctx.fillStyle = this.col;
+                ctx.fillRect(this.x, this.y, width*0.7, height*0.1);
+            };
+            var btn1 = new Button(width*0.15, 100, 'rgb(0, 255, 0)');
             function drawBackground() {
                 ctx.fillStyle = 'rgb(245, 245, 245)';
                 ctx.fillRect(0, 0, width, height);
@@ -48,7 +70,9 @@
                 ctx.font = width/19.53125 + 'px Nunito';
                 ctx.fillText('S', width*0.55 + width*0.1, height*0.13);
             }
+            
             drawBackground();
+            btn1.display();
             displayLogo();
         </script>
 
