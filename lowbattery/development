@@ -49,6 +49,13 @@
                 x = event.clientX - canvas.offsetLeft;
                 y = event.clientY - canvas.offsetTop;
             }
+            function updateMouse() {
+                for(var i = 0; i<buttons.length; i++) {
+                   if(buttons[i].focused) {
+                      buttons[i].clicked = true;
+                   }
+                }
+            }
             function Button(x, y, col, name) {
                 this.x = x;
                 this.y = y;
@@ -62,8 +69,7 @@
                 if(!this.focused) {
                     roundedRect(ctx, this.x, this.y, width*0.7, height*0.1, width*0.02);
                 }
-                else {
-                    
+                else {      
                     roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
                 }
                 ctx.fillStyle = 'rgb(255, 255, 255)';
@@ -74,9 +80,14 @@
             Button.prototype.update = function() {
                 if(this.x<x && this.y<y && (this.x + width*0.7)>x && (this.y + height*0.1)>y) {
                     this.focused = true;
+                    if(this.clicked) {
+                       ctx.fillStyle = 'rgb(0,0 ,0)';
+                       ctx.fillText('yay', 100, 100);
+                    }
                 }
                 else {
                     this.focused = false;
+                    this.clicked = false;
                 }
             };
             function drawBackground() {
@@ -115,18 +126,29 @@
                 new Button(width*0.15, height*0.75, 'rgb(242, 19, 138)', 'Credits'),
                 
             ];
+            function updateMouse() {
+                for(var i = 0; i<buttons.length; i++) {
+                   if(buttons[i].focused) {
+                      buttons[i].clicked = true;
+                   }
+                }
+            }
             canvas.addEventListener('mousemove', updateCoordinates);
+            canvas.addEventListener('click', updateMouse);
             
-            function draw() {
-            drawBackground();
-            for(var i = 0; i<buttons.length; i++) {
-                buttons[i].display();
-                buttons[i].update();
+            function drawHomeScreen() {
+                drawBackground();
+                for(var i = 0; i<buttons.length; i++) {
+                   buttons[i].display();
+                   buttons[i].update();
+                }
+                displayLogo();
             }
-            displayLogo();
-            requestAnimationFrame(draw);
+            function runGame() {
+                drawHomeScreen();
+                resquestAnimationframe(runGame);
             }
-            draw();
+            runGame();
         </script>
 
     </body>
