@@ -23,7 +23,7 @@
     </head> 
     <body>
         <canvas class="myCanvas">
-           <p>Add suitable fallback here.</p>
+           <p>Please enable Javascript in your browser.</p>
         </canvas>
         <script>
             var canvas = document.querySelector('.myCanvas');
@@ -41,8 +41,9 @@
                 ctx.arcTo(x + width, y, x + width - radius, y, radius);
                 ctx.lineTo(x + radius, y);
                 ctx.arcTo(x, y, x, y + radius, radius);
-                ctx.stroke();
+                ctx.fill();
 }
+
             function Button(x, y, col) {
                 this.x = x;
                 this.y = y;
@@ -50,15 +51,14 @@
             }
             Button.prototype.display = function() {
                 ctx.fillStyle = this.col;
-                ctx.fillRect(this.x, this.y, width*0.7, height*0.1);
+                roundedRect(ctx, this.x, this.y, width*0.7, height*0.1, width*0.02);
             };
-            var btn1 = new Button(width*0.15, 100, 'rgb(0, 255, 0)');
             function drawBackground() {
                 ctx.fillStyle = 'rgb(245, 245, 245)';
                 ctx.fillRect(0, 0, width, height);
             }
             function displayLogo() {
-                ctx.fillStyle = 'rgb(0, 0, 255)';
+                ctx.fillStyle = 'rgb(80, 80, 255)';
                 ctx.font = width/8 + 'px Nunito';
                 ctx.fillText('C', width*0.2 + width*0.1, height*0.15);
                 ctx.font = width/10 + 'px Nunito';
@@ -69,10 +69,30 @@
                 ctx.fillText('E', width*0.48 + width*0.1, height*0.135);
                 ctx.font = width/19.53125 + 'px Nunito';
                 ctx.fillText('S', width*0.55 + width*0.1, height*0.13);
+                
+                ctx.fillStyle = 'rgb(80, 80, 255)';
+                ctx.font = width/8 + 'px Nunito';
+                ctx.fillText('C', width*0.2 + width*0.095, height*0.15);
+                ctx.font = width/10 + 'px Nunito';
+                ctx.fillText('U', width*0.3 + width*0.095, height*0.145);
+                ctx.font = width/12.5 + 'px Nunito';
+                ctx.fillText('B', width*0.4 + width*0.095, height*0.14);
+                ctx.font = width/15.625 + 'px Nunito';
+                ctx.fillText('E', width*0.48 + width*0.095, height*0.135);
+                ctx.font = width/19.53125 + 'px Nunito';
+                ctx.fillText('S', width*0.55 + width*0.095, height*0.13);
             }
-            
+            var buttons = [
+                new Button(width*0.15, height*0.3, 'rgb(0, 255, 0)'),
+                new Button(width*0.15, height*0.45, 'rgb(80, 80, 255)'),
+                new Button(width*0.15, height*0.6, 'rgb(153, 12, 235)'),
+                new Button(width*0.15, height*0.75, 'rgb(242, 19, 138)'),
+                
+            ];
             drawBackground();
-            btn1.display();
+            for(var i = 0; i<buttons.length; i++) {
+                buttons[i].display();
+            }
             displayLogo();
         </script>
 
