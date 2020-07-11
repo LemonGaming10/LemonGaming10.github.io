@@ -38,6 +38,7 @@
             var y;
             var mouseClicked = false;
             var scene = 'home';
+            var score = 0;
             
             //Utility functions
             function updateCoordinates(event) {
@@ -136,7 +137,7 @@
               if(x > width/18 && x < (width*(17/18))) {
                 player.x = x;
               }
-              if(this.col < 25501) {
+              if(this.col < 101) {
                 this.col++;
               }
            };
@@ -162,7 +163,9 @@
            };
            Cube.prototype.detectCollision = function() {
               if(dist(this.x, this.y, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y, player.x, player.y)<((player.radius)) || dist(this.x, this.y+this.size, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y+this.size, player.x, player.y)<((player.radius))) {
-                    player.out = true;
+                    if(player.col > 99) {
+                      player.out = true;
+                    }
               }
            };
            var cubecolors=[
@@ -181,7 +184,7 @@
            
            //Other Graphics
             function drawBackground(a) {
-                ctx.fillStyle = 'rgb(252, 252, 252' + a + ')';
+                ctx.fillStyle = 'rgba(252, 252, 252' + a + ')';
                 ctx.fillRect(0, 0, width, height);
             }
             function displayLogo() {
@@ -212,7 +215,8 @@
             
             //The Game Scenes...
             function drawHomeScene() {
-                drawBackground(0.5);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillRect(0, 0, width, height);
                 for(var i = 0; i < cubes.length; i++) {
                    cubes[i].display();
                    cubes[i].update();
@@ -231,19 +235,40 @@
             }
             function drawGameScene() {
                 drawBackground(1);
-                for(var i = 0; i < cubes.length; i++) {
-                   cubes[i].display();
-                   cubes[i].update();
-                   cubes[i].detectCollision();
-                   if(cubes[i].y>height+cubes[0].size) {
-                      cubes[i].y = (-2.5*height+random(height/-100, height/100));
-                      cubes[i].x = Math.floor(random(0, (width-(cubes[0].size))));
+                if(!player.out) {
+                   for(var i = 0; i < cubes.length; i++) {
+                      cubes[i].display();
+                      cubes[i].update();
+                      cubes[i].detectCollision();
+                      if(cubes[i].y>height+cubes[0].size) {
+                         cubes[i].y = (-2.5*height+random(height/-100, height/100));
+                         cubes[i].x = Math.floor(random(0, (width-(cubes[0].size))));
+                      }
                    }
-                 }
-                 if(!player.out) {
                     player.display();
                     player.update();
+                    score++;
+                    ctx.textAlign = 'right';
+                    ctx.font = width/15 + 'px Nunito';
+                    ctx.fillStyle = 'rgb(0, 0, 0)';
+                    ctx.fillText(score, width*9/10, height/8);
                  }
+                 else {
+                    scene = 'out';
+                 }
+            }
+            var u1 = 0.01;
+            function drawOutScene() {
+               drawBackground(1);
+               ctx.textAlign = 'center';
+               ctx.font = width/10 + 'px Nunito';
+               ctx.fillStyle = 'rgb(255, 0, 0)';
+               ctx.fillText('OUT', width/2, height/8);
+               ctx.fillStyle = 'rgb(0, 0, 0)';
+               ctx.fillText(Math.floor(score*u1), width/2, height*2/8);
+               if(u1 < 1.01) {
+                  u1+=0.01
+               }
             }
             
             //The function to run the game
@@ -253,6 +278,9 @@
                 }
                 else if(scene === 'Play') {
                    drawGameScene();               
+                }
+                else if(scene === 'out') {
+                   drawOutScene();
                 }
                 else if(scene === 'Shop') {
                    scene = 'home';
