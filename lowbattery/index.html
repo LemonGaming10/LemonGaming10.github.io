@@ -23,7 +23,7 @@
     </head> 
     <body>
         <canvas class="myCanvas">
-           <p>Please enable Javascript in your browser.</p>
+           <p align = 'center'>Please enable Javascript in your browser.</p>
         </canvas>
         <script>
             var canvas = document.querySelector('.myCanvas');
@@ -32,6 +32,22 @@
             var ctx = canvas.getContext('2d');
             var x;
             var y;
+            var mouseClicked = false;
+            var scene = 'home';
+            
+            function updateCoordinates(event) {
+                x = event.clientX - canvas.offsetLeft;
+                y = event.clientY - canvas.offsetTop;
+            }
+            function updateMouseStatus() {
+                mouseClicked = true;
+            }
+            function random(min, max) {
+              return Math.floor(Math.random() * (max - min) ) + min;
+           }
+           function dist(x1, y1, x2, y2) {
+              return Math.sqrt(Math.pow(x2-x1, 2)+Math.pow(y2-y1, 2));
+           }
             function roundedRect(ctx, x, y, width, height, radius) {
                 ctx.beginPath();
                 ctx.moveTo(x, y + radius);
@@ -45,10 +61,6 @@
                 ctx.arcTo(x, y, x, y + radius, radius);
                 ctx.fill();
                }
-            function updateCoordinates(event) {
-                x = event.clientX - canvas.offsetLeft;
-                y = event.clientY - canvas.offsetTop;
-            }
             function Button(x, y, col, name) {
                 this.x = x;
                 this.y = y;
@@ -60,11 +72,15 @@
             Button.prototype.display = function() {
                 ctx.fillStyle = this.col;
                 if(!this.focused) {
-                    roundedRect(ctx, this.x, this.y, width*0.7, height*0.1, width*0.02);
+                    roundedRect(ctx, this.x, this.y, width*0.7, height*0.1, width*0.02);                    
                 }
-                else {
-                    
+                else {       
                     roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
+                    if(this.clicked) {
+                       ctx.fillStyle = 'rgba(255, 255, 255, 5)'
+                       roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
+                       scene = this.name;                     
+                    }
                 }
                 ctx.fillStyle = 'rgb(255, 255, 255)';
                 ctx.font = width/15 + 'px Nunito';
@@ -78,7 +94,33 @@
                 else {
                     this.focused = false;
                 }
+                if(mouseClicked) {
+                    this.clicked = true;
+                }
+                else {
+                    this.clicked = false;
+                }
             };
+            
+            // Cube object and its methods |_|
+            function Cube(x, y, col) {
+              this.x=x;
+              this.y=y;
+              this.col=col;
+              this.size= width/18;
+              this.speed= width/20;
+           }
+            Cube.prototype.display = function() {
+              ctx.fillStyle = this.col;
+              ctx.fillRect(this.x, this.y, this.size, this.size);
+           };
+            Cube.prototype.update = function() {
+              this.y+=speed;
+              if(speed<height*0.015) {
+              speed+=height/1000;
+              }
+           };
+           
             function drawBackground() {
                 ctx.fillStyle = 'rgb(245, 245, 245)';
                 ctx.fillRect(0, 0, width, height);
@@ -109,14 +151,25 @@
                 ctx.fillText('S', width*0.55 + width*0.095, height*0.13);
             }
             var buttons = [
-                new Button(width*0.15, height*0.3, 'rgb(0, 255, 0)', 'Play'),
+                new Button(width*0.15, height*0.3, 'rgb(20, 255, 20)', 'Play'),
                 new Button(width*0.15, height*0.45, 'rgb(80, 80, 255)', 'Shop'),
                 new Button(width*0.15, height*0.6, 'rgb(153, 12, 235)', 'Challenges'),
                 new Button(width*0.15, height*0.75, 'rgb(242, 19, 138)', 'Credits'),
                 
             ];
-            canvas.addEventListener('mousemove', updateCoordinates);
-            
+            var cubecolors=[
+              'rgb(80, 80, 255)',
+              'rgb(153, 12, 235)',
+              'rgb(23, 227, 4)',
+              'rgb(242, 19, 138)'
+            ];
+            var cubes = [];
+            for(var i=0; i<20; i++) {
+              var col = Math.floor(Math.random()*4);
+              var x= Math.floor(random(0, width*(17/18)));
+              var y= Math.floor(random(0.5*height, height));
+              cubes.push(new Cube(x, y, cubecolors[col]));
+           }
             function drawHomeScene() {
                 drawBackground();
                 for(var i = 0; i<buttons.length; i++) {
@@ -125,10 +178,34 @@
                 }
                 displayLogo();
             }
+            function drawGameScene() {
+                drawBackground();
+                for(var i = 0; i < cubes.length; i++) {
+                   cubes[i].display();
+                   cubes[i].update();
+                }
+            }
             function runGame() {
-                drawHomeScene();
+                if(scene === 'home') {
+                   drawHomeScene();    
+                }
+                else if(scene === 'Play') {
+                   drawGameScene();               
+                }
+                else if(scene === 'Shop') {
+                   scene = 'home';
+                }
+                else if(scene === 'Challenges') {
+                   scene = 'home';
+                }
+                else if(scene === 'Credits') {
+                   scene = 'home';
+                }
+                mouseClicked = false;
                 requestAnimationFrame(runGame);
             }
+            canvas.addEventListener('mousemove', updateCoordinates);
+            canvas.addEventListener('click', updateMouseStatus);
             runGame();
         </script>
 
