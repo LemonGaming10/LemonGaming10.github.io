@@ -102,6 +102,28 @@
                 }
             };
             
+            //Ball object and its methods
+            function Ball() {
+              this.x = width/2;
+              this.y = height*0.8;
+              this.radius = width/32;
+              this.out = false;
+              this.col = 200000;
+              }
+           Ball.prototype.display = function() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.radius, 0, 2*Math.PI, true);
+              ctx.fillStyle ='rgba(255, 0, 0, ' + this.col/100 + ')';
+              ctx.fill();
+              ctx.closePath();
+           };
+           Ball.prototype.update = function() {
+              if(x > width/18 && x < (width*(17/18))) {
+                player.x = x;
+              }
+           };
+           var player = new Ball();
+           
             // Cube object and its methods |_|
             var speed = height/60;
             function Cube(x, y, col) {
@@ -120,9 +142,14 @@
                  speed+=height/1000;
               }
            };
+           Cube.prototype.detectCollision = function() {
+              if(dist(this.x, this.y, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y, player.x, player.y)<((player.radius)) || dist(this.x, this.y+this.size, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y+this.size, player.x, player.y)<((player.radius))) {
+                 player.out = true;
+              }
+           };
            
             function drawBackground() {
-                ctx.fillStyle = 'rgb(245, 245, 245)';
+                ctx.fillStyle = 'rgb(252, 252, 252)';
                 ctx.fillRect(0, 0, width, height);
             }
             function displayLogo() {
@@ -183,11 +210,15 @@
                 for(var i = 0; i < cubes.length; i++) {
                    cubes[i].display();
                    cubes[i].update();
-                
+                   cubes[i].detectCollision();
                    if(cubes[i].y>height+cubes[0].size) {
                       cubes[i].y = (-2.5*height+random(height/-100, height/100));
                       cubes[i].x = Math.floor(random(0, (width-(cubes[0].size))));
                    }
+                 }
+                 if(!player.out) {
+                    player.display();
+                    player.update();
                  }
             }
             function runGame() {
