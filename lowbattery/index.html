@@ -199,6 +199,16 @@
            }
             function drawHomeScene() {
                 drawBackground();
+                for(var i = 0; i < cubes.length; i++) {
+                   cubes[i].display();
+                   cubes[i].update();
+                   if(cubes[i].y>height+cubes[0].size) {
+                      cubes[i].y = (-2.5*height+random(height/-100, height/100));
+                      cubes[i].x = Math.floor(random(0, (width-(cubes[0].size))));
+                   }
+                }
+                ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+                ctx.fillRect(0, 0, width, height);
                 for(var i = 0; i<buttons.length; i++) {
                    buttons[i].display();
                    buttons[i].update();
