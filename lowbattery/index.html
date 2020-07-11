@@ -84,7 +84,7 @@
                 else {       
                     roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
                     if(this.clicked) {
-                       ctx.fillStyle = 'rgba(255, 255, 255, 5)'
+                       ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'
                        roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
                        scene = this.name;
                        speed
@@ -162,9 +162,7 @@
            };
            Cube.prototype.detectCollision = function() {
               if(dist(this.x, this.y, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y, player.x, player.y)<((player.radius)) || dist(this.x, this.y+this.size, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y+this.size, player.x, player.y)<((player.radius))) {
-                 if(player.col > 25400) {
                     player.out = true;
-                 }
               }
            };
            var cubecolors=[
@@ -182,8 +180,8 @@
            }
            
            //Other Graphics
-            function drawBackground() {
-                ctx.fillStyle = 'rgb(252, 252, 252)';
+            function drawBackground(a) {
+                ctx.fillStyle = 'rgb(252, 252, 252' + a + ')';
                 ctx.fillRect(0, 0, width, height);
             }
             function displayLogo() {
@@ -212,9 +210,9 @@
                 ctx.fillText('S', width*0.55 + width*0.095, height*0.13);
             }
             
-            //The Game Scenes
+            //The Game Scenes...
             function drawHomeScene() {
-                drawBackground();
+                drawBackground(0.5);
                 for(var i = 0; i < cubes.length; i++) {
                    cubes[i].display();
                    cubes[i].update();
@@ -232,7 +230,7 @@
                 displayLogo();
             }
             function drawGameScene() {
-                drawBackground();
+                drawBackground(1);
                 for(var i = 0; i < cubes.length; i++) {
                    cubes[i].display();
                    cubes[i].update();
@@ -247,6 +245,7 @@
                     player.update();
                  }
             }
+            
             //The function to run the game
             function runGame() {
                 if(scene === 'home') {
