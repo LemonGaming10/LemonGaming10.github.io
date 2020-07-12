@@ -48,6 +48,10 @@
             function updateMouseStatus() {
                 mouseClicked = true;
             }
+            function updateTouch(event) {
+                x = event.touches[0].clientX - canvas.offsetLeft;
+                y = event.touches[0].clientY - canvas.offsetTop;
+            }
             function random(min, max) {
               return Math.floor(Math.random() * (max - min) ) + min;
            }
@@ -342,6 +346,7 @@
             
             //Adding the event listeners
             canvas.addEventListener('mousemove', updateCoordinates);
+            canvas.addEventListener('touchmove', updateTouch);
             canvas.addEventListener('click', updateMouseStatus);
             
             //Runs the game
