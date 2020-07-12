@@ -37,7 +37,7 @@
             var x;
             var y;
             var mouseClicked = false;
-            var scene = 'Home';
+            var scene = 'home';
             var score = 0;
             
             //Utility functions
@@ -47,6 +47,10 @@
             }
             function updateMouseStatus() {
                 mouseClicked = true;
+            }
+            function updateTouch(event) {
+                x = event.touches[0].clientX - canvas.offsetLeft;
+                y = event.touches[0].clientY - canvas.offsetTop;
             }
             function random(min, max) {
               return Math.floor(Math.random() * (max - min) ) + min;
@@ -288,13 +292,12 @@
                    endButtons[i].display();
                    endButtons[i].update();
                }
-               
             }
             
             //The function to run the game
             function runGame() {
-                if(scene === 'Home') {
-                   drawHomeScene();    
+                if(scene === 'home') {
+                   drawHomeScene();                    
                 }
                 else if(scene === 'Play') {
                    drawGameScene();               
@@ -324,12 +327,26 @@
                    player.col = 0;
                    score = 0;
                 }
+                else if(scene === 'Home') {
+                   cubes = [];
+                   for(var i=0; i<20; i++) {
+                      var col = Math.floor(Math.random()*4);
+                      var x= Math.floor(random(0, width*(17/18)));
+                      var y= Math.floor(random(-2.5*height, height));
+                      cubes.push(new Cube(x, y, cubecolors[col]));
+                   }
+                   player.out = false;
+                   player.col = 0;
+                   score = 0;
+                   scene = 'home';
+                }
                 mouseClicked = false;
                 requestAnimationFrame(runGame);
             }
             
             //Adding the event listeners
             canvas.addEventListener('mousemove', updateCoordinates);
+            canvas.addEventListener('touchmove', updateTouch);
             canvas.addEventListener('click', updateMouseStatus);
             
             //Runs the game
