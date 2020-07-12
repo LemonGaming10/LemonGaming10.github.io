@@ -39,6 +39,15 @@
             var mouseClicked = false;
             var scene = 'home';
             var score = 0;
+            var highScore;
+            
+            //Checking the user's storage for highscore
+            if(localStorage.getItem('highScore')) {
+               highScore = localStorage.getItem('highScore');
+            }
+            else {
+               highScore = 0;
+            }
             
             //Utility functions
             function updateCoordinates(event) {
@@ -267,6 +276,10 @@
                  }
                  else {
                     scene = 'out';
+                    if(score > highScore) {
+                       localStorage.setItem('highScore', score);
+                    }
+                    highScore =  localStorage.getItem('highScore'); 
                  }
             }
             var u1 = 0.01;
@@ -279,7 +292,8 @@
                ctx.fillText('OUT', width/2, height/8);
                ctx.fillStyle = 'rgb(0, 0, 0)';
                ctx.fillText(Math.floor(score*u1), width/2, height*2/8);
-               if(u1 < 1.01) {
+               ctx.fillText(highScore, width/2, height*5/8);
+               if(u1 < 1) {
                   u1+=0.01
                }
                ctx.beginPath();
