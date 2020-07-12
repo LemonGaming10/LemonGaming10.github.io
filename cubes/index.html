@@ -37,7 +37,7 @@
             var x;
             var y;
             var mouseClicked = false;
-            var scene = 'Home';
+            var scene = 'home';
             var score = 0;
             
             //Utility functions
@@ -288,13 +288,12 @@
                    endButtons[i].display();
                    endButtons[i].update();
                }
-               
             }
             
             //The function to run the game
             function runGame() {
-                if(scene === 'Home') {
-                   drawHomeScene();    
+                if(scene === 'home') {
+                   drawHomeScene();                    
                 }
                 else if(scene === 'Play') {
                    drawGameScene();               
@@ -323,6 +322,19 @@
                    player.out = false;
                    player.col = 0;
                    score = 0;
+                }
+                else if(scene === 'Home') {
+                   cubes = [];
+                   for(var i=0; i<20; i++) {
+                      var col = Math.floor(Math.random()*4);
+                      var x= Math.floor(random(0, width*(17/18)));
+                      var y= Math.floor(random(-2.5*height, height));
+                      cubes.push(new Cube(x, y, cubecolors[col]));
+                   }
+                   player.out = false;
+                   player.col = 0;
+                   score = 0;
+                   scene = 'home';
                 }
                 mouseClicked = false;
                 requestAnimationFrame(runGame);
