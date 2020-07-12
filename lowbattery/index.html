@@ -37,7 +37,7 @@
             var x;
             var y;
             var mouseClicked = false;
-            var scene = 'home';
+            var scene = 'Home';
             var score = 0;
             
             //Utility functions
@@ -69,35 +69,37 @@
             }
             
             //Button Object and methods
-            function Button(x, y, col, name) {
+            function Button(x, y, col, name, wid, radius) {
                 this.x = x;
                 this.y = y;
                 this.col = col;
                 this.name = name;
                 this.focused = false;
                 this.clicked = false;
+                this.width = wid;
+                this.radius = radius;
             }
             Button.prototype.display = function() {
                 ctx.fillStyle = this.col;
                 if(!this.focused) {
-                    roundedRect(ctx, this.x, this.y, width*0.7, height*0.1, width*0.02);                    
+                    roundedRect(ctx, this.x, this.y, this.width*0.7, height*0.1, this.radius);                    
                 }
                 else {       
-                    roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
+                    roundedRect(ctx, this.x-this.width*0.05, this.y, this.width*0.8, height*0.1, this.radius);
                     if(this.clicked) {
                        ctx.fillStyle = 'rgba(0, 0, 0, 0.2)'
-                       roundedRect(ctx, this.x-width*0.05, this.y, width*0.8, height*0.1, width*0.02);
+                       roundedRect(ctx, this.x-this.width*0.05, this.y, this.width*0.8, height*0.1, this.radius);
                        scene = this.name;
-                       speed
+                       
                     }
                 }
                 ctx.fillStyle = 'rgb(255, 255, 255)';
                 ctx.font = width/15 + 'px Nunito';
                 ctx.textAlign = 'center';
-                ctx.fillText(this.name, width*0.5, this.y+height*0.06);
+                ctx.fillText(this.name, this.x + this.width*0.35, this.y+height*0.06);
             };
             Button.prototype.update = function() {
-                if(this.x<x && this.y<y && (this.x + width*0.7)>x && (this.y + height*0.1)>y) {
+                if(this.x<x && this.y<y && (this.x + this.width*0.7)>x && (this.y + height*0.1)>y) {
                     this.focused = true;
                 }
                 else {
@@ -111,12 +113,16 @@
                 }
             };
             var buttons = [
-                new Button(width*0.15, height*0.3, 'rgb(20, 255, 20)', 'Play'),
-                new Button(width*0.15, height*0.45, 'rgb(80, 80, 255)', 'Shop'),
-                new Button(width*0.15, height*0.6, 'rgb(153, 12, 235)', 'Challenges'),
-                new Button(width*0.15, height*0.75, 'rgb(242, 19, 138)', 'Credits'),
+                new Button(width*0.15, height*0.3, 'rgb(20, 255, 20)', 'Play', width, this.width*0.03),
+                new Button(width*0.15, height*0.45, 'rgb(80, 80, 255)', 'Shop', width, this.width*0.03),
+                new Button(width*0.15, height*0.6, 'rgb(153, 12, 235)', 'Challenges', width, this.width*0.03),
+                new Button(width*0.15, height*0.75, 'rgb(242, 19, 138)', 'Credits', width, this.width*0.03),
                 
             ];
+            var endButtons = [
+              new Button(width*0.1, height*3/4, 'rgb(153, 12, 235)', 'Home', width/2.5, width*0.09),
+              new Button(width*0.6, height*3/4, 'rgb(20, 255, 20)', 'Retry', width/2.5, width*0.09)
+              ];
             
             //Ball object and its methods O
             function Ball() {
@@ -258,6 +264,7 @@
                  }
             }
             var u1 = 0.01;
+            var a = 0;
             function drawOutScene() {
                drawBackground(1);
                ctx.textAlign = 'center';
@@ -269,11 +276,22 @@
                if(u1 < 1.01) {
                   u1+=0.01
                }
+               ctx.beginPath();
+               ctx.arc(width/2, height*4/9 + Math.sin(a)*width/8, width/10, 0, 2*Math.PI, true);
+               ctx.fillStyle = 'rgb(255, 0, 0)';
+               ctx.fill();
+               ctx.closePath();
+               a+=0.1;
+               for(var i = 0; i < endButtons.length; i++) {
+                   endButtons[i].display();
+                   endButtons[i].update();
+               }
+               
             }
             
             //The function to run the game
             function runGame() {
-                if(scene === 'home') {
+                if(scene === 'Home') {
                    drawHomeScene();    
                 }
                 else if(scene === 'Play') {
@@ -290,6 +308,19 @@
                 }
                 else if(scene === 'Credits') {
                    scene = 'home';
+                }
+                else if(scene === 'Retry') {
+                   scene = 'Play'
+                   cubes = [];
+                   for(var i=0; i<20; i++) {
+                      var col = Math.floor(Math.random()*4);
+                      var x= Math.floor(random(0, width*(17/18)));
+                      var y= Math.floor(random(-2.5*height, height));
+                      cubes.push(new Cube(x, y, cubecolors[col]));
+                   }
+                   player.out = false;
+                   player.col = 0;
+                   score = 0;
                 }
                 mouseClicked = false;
                 requestAnimationFrame(runGame);
