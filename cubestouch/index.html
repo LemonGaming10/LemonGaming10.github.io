@@ -39,6 +39,16 @@
             var mouseClicked = false;
             var scene = 'home';
             var score = 0;
+            var highScore;
+            
+            
+            //Checking the user's storage for highscore
+            if(localStorage.getItem('highScore')) {
+               highScore = localStorage.getItem('highScore');
+            }
+            else {
+               highScore = 0;
+            }
             
             //Utility functions
             function updateCoordinates(event) {
@@ -127,6 +137,7 @@
               new Button(width*0.1, height*3/4, 'rgb(153, 12, 235)', 'Home', width/2.5, width*0.09),
               new Button(width*0.6, height*3/4, 'rgb(20, 255, 20)', 'Retry', width/2.5, width*0.09)
               ];
+            var homeButton = new Button(width*0.1, height*1/15, 'rgb(153, 12, 235)', 'Home', width/3.5, width*0.03);
             
             //Ball object and its methods O
             function Ball() {
@@ -193,10 +204,11 @@
            }
            
            //Other Graphics
-            function drawBackground(a) {
-                ctx.fillStyle = 'rgba(252, 252, 252' + a + ')';
+            function drawBackground() {
+                ctx.fillStyle = 'rgba(252, 252, 252)';
                 ctx.fillRect(0, 0, width, height);
             }
+            
             function displayLogo() {
                 ctx.fillStyle = 'rgb(80, 80, 255)';
                 ctx.font = width/8 + 'px Nunito';
@@ -246,7 +258,7 @@
                 displayLogo();
             }
             function drawGameScene() {
-                drawBackground(1);
+                drawBackground();
                 if(!player.out) {
                    for(var i = 0; i < cubes.length; i++) {
                       cubes[i].display();
@@ -267,19 +279,25 @@
                  }
                  else {
                     scene = 'out';
+                    if(score > highScore) {
+                       localStorage.setItem('highScore', score);
+                    }
+                    highScore =  localStorage.getItem('highScore'); 
                  }
             }
             var u1 = 0.01;
             var a = 0;
             function drawOutScene() {
-               drawBackground(1);
+               drawBackground();
                ctx.textAlign = 'center';
                ctx.font = width/10 + 'px Nunito';
                ctx.fillStyle = 'rgb(255, 0, 0)';
                ctx.fillText('OUT', width/2, height/8);
                ctx.fillStyle = 'rgb(0, 0, 0)';
                ctx.fillText(Math.floor(score*u1), width/2, height*2/8);
-               if(u1 < 1.01) {
+               ctx.fillText(highScore, width/2, height*5.5/8);
+               ctx.fillText('HighScore', width/2, height*5/8);
+               if(u1 < 1) {
                   u1+=0.01
                }
                ctx.beginPath();
@@ -294,6 +312,11 @@
                }
             }
             
+            function drawShopScene() {
+               drawBackground();
+               homeButton.display();
+               homeButton.update();
+            }
             //The function to run the game
             function runGame() {
                 if(scene === 'home') {
@@ -306,7 +329,7 @@
                    drawOutScene();
                 }
                 else if(scene === 'Shop') {
-                   scene = 'home';
+                   drawShopScene();
                 }
                 else if(scene === 'Challenges') {
                    scene = 'home';
