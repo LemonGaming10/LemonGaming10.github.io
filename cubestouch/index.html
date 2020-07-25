@@ -40,6 +40,7 @@
             var scene = 'home';
             var score = 0;
             var highScore;
+            var speed = height/120;
             
             
             //Checking the user's storage for highscore
@@ -165,7 +166,6 @@
            var player = new Ball();
            
             // Cube object and its methods |_|
-            var speed = height/60;
             function Cube(x, y, col) {
               this.x=x;
               this.y=y;
@@ -178,9 +178,6 @@
            };
             Cube.prototype.update = function() {
               this.y+=speed;
-              if(speed<height*0.015) {
-                 speed+=height/1000;
-              }
            };
            Cube.prototype.detectCollision = function() {
               if(dist(this.x, this.y, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y, player.x, player.y)<((player.radius)) || dist(this.x, this.y+this.size, player.x, player.y)<((player.radius)) || dist(this.x+this.size, this.y+this.size, player.x, player.y)<((player.radius))) {
@@ -237,7 +234,7 @@
             
             //The Game Scenes...
             function drawHomeScene() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 1)';
                 ctx.fillRect(0, 0, width, height);
                 for(var i = 0; i < cubes.length; i++) {
                    cubes[i].display();
@@ -258,6 +255,7 @@
                 displayLogo();
             }
             function drawGameScene() {
+                speed = height/60;
                 drawBackground();
                 if(!player.out) {
                    for(var i = 0; i < cubes.length; i++) {
@@ -349,7 +347,6 @@
                    player.out = false;
                    player.col = 0;
                    score = 0;
-                   u1 = 0;
                 }
                 else if(scene === 'Home') {
                    cubes = [];
@@ -363,7 +360,6 @@
                    player.col = 0;
                    score = 0;
                    scene = 'home';
-                   u1 = 0;
                 }
                 mouseClicked = false;
                 requestAnimationFrame(runGame);
