@@ -39,7 +39,20 @@
       var height = canvas.height = width * 9 / 16;
       var ctx = canvas.getContext('2d');
 
-      //Utility functions
+      //Low Battery Game engine
+      function PVector(x, y) {
+        this.x = x;
+        this.y = y;
+      }
+      PVector.prototype.add = function(v) {
+        this.x += v.x;
+        this.y += v.y;
+      };
+      PVector.prototype.mult = function(v) {
+        this.x = this.x * v;
+        this.y = this.y * v;
+      };
+
       function updateCoordinates(event) {
         x = event.clientX - canvas.offsetLeft;
         y = event.clientY - canvas.offsetTop;
@@ -107,13 +120,39 @@
         ctx.closePath();
         ctx.fill();
         ctx.fillStyle = 'rgb(0, 0, 0)';
-        //ctx.fillRect(width/6, height/6, width/
       }
 
+      function Zero(x, y) {
+        this.position = new PVector(x, y);
+        this.status = false;
+        this.life = 10;
+      }
+      Zero.prototype.display = function() {
+        ctx.fillStyle = 'rgb(150, 150, 150)';
+        ctx.beginPath();
+        ctx.moveTo(this.position.x - 20, this.position.y);
+        ctx.quadraticCurveTo( this.position.x, this.position.y - 150, this.position.x + 20, this.position.y);
+        ctx.closePath();
+        ctx.fill();
+      };
+      var zero = new Zero(200, 200);
       //Beta
       ctx.fillStyle = 'rgb(0, 0, 0)';
       ctx.fillRect(0, 0, width, height);
-      drawBurgerShop()
+      ctx.fillStyle = 'rgb(255, 255, 255)';
+      ctx.beginPath();
+      ctx.moveTo(900, 500);
+      ctx.quadraticCurveTo(925, 350, 950, 500);
+      ctx.closePath();
+      ctx.fill();
+      
+      zero.display();
+
+      var a = new PVector(100, 100);
+      var b = new PVector(50, 10);
+      var c = a.add(b);
+      ctx.font = ' 100px Play'
+      //ctx.fillText(a.y, 100, 100);
 
     </script>
 
