@@ -128,12 +128,22 @@
         this.life = 10;
       }
       Zero.prototype.display = function() {
-        ctx.fillStyle = 'rgb(150, 150, 150)';
+        //Main Base
+        ctx.fillStyle = 'rgb(200, 200, 200)';
         ctx.beginPath();
         ctx.moveTo(this.position.x - 20, this.position.y);
         ctx.quadraticCurveTo( this.position.x, this.position.y - 150, this.position.x + 20, this.position.y);
         ctx.closePath();
         ctx.fill();
+        //Cockpit
+        ctx.fillStyle = 'rgba(0, 0, 200, 0.5)'
+        ctx.beginPath();
+        ctx.moveTo(this.position.x - 10, this.position.y - 15);
+        ctx.quadraticCurveTo( this.position.x, this.position.y - 90, this.position.x + 10, this.position.y - 15);
+        ctx.closePath();
+        ctx.fill();
+        //TailWings
+        
       };
       var zero = new Zero(200, 200);
       //Beta
