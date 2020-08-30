@@ -122,27 +122,28 @@
         ctx.fillStyle = 'rgb(0, 0, 0)';
       }
 
+      //SpaceShip Graphics and Physics
       function Zero(x, y) {
         this.position = new PVector(x, y);
-        this.status = false;
-        this.life = 10;
+        this.velocity = new PVector(0, 0);
+        this.acceleration = new PVector(0, 0);
       }
       Zero.prototype.display = function() {
         //Wing - Left
         ctx.fillStyle = 'rgb(150, 150, 150)';
         ctx.beginPath();
         ctx.moveTo(this.position.x, this.position.y - 60);
-        ctx.lineTo(this.position.x - 50, this.position.y  - 40);
+        ctx.lineTo(this.position.x - 50, this.position.y - 40);
         ctx.lineTo(this.position.x - 50, this.position.y - 20);
-        ctx.lineTo(this.position.x, this.position.y - 35);       
+        ctx.lineTo(this.position.x, this.position.y - 35);
         ctx.closePath();
         ctx.fill();
         //Wing - Right
         ctx.beginPath();
         ctx.moveTo(this.position.x, this.position.y - 60);
-        ctx.lineTo(this.position.x + 50, this.position.y  - 40);
+        ctx.lineTo(this.position.x + 50, this.position.y - 40);
         ctx.lineTo(this.position.x + 50, this.position.y - 20);
-        ctx.lineTo(this.position.x, this.position.y - 35);       
+        ctx.lineTo(this.position.x, this.position.y - 35);
         ctx.closePath();
         ctx.fill();
         //Main Base
@@ -179,32 +180,27 @@
         ctx.fill();
         //Other Stuff
         ctx.fillStyle = 'rgb(100, 100, 100)';
-        ctx.fillRect(this.position.x - 50, this.position.y  - 40, 5, 30);
-        ctx.fillRect(this.position.x + 50, this.position.y  - 40, 5, 30);
+        ctx.fillRect(this.position.x - 50, this.position.y - 40, 5, 30);
+        ctx.fillRect(this.position.x + 50, this.position.y - 40, 5, 30);
         ctx.fillRect(this.position.x - 60, this.position.y + 5, 5, 35);
         ctx.fillRect(this.position.x + 60, this.position.y + 5, 5, 35);
         ctx.fillRect(this.position.x - 30, this.position.y - 4, 5, 35);
         ctx.fillRect(this.position.x + 30, this.position.y - 4, 5, 35);
+      };
+      Zero.prototype.update = function() {
         
+        //Updates the position
+        this.velocity.add(this.acceleration);
+        this.position.add(this.acceleration);
+        this.acceleration.mult(0);
       };
       var zero = new Zero(200, 200);
       //Beta
       ctx.fillStyle = 'rgb(0, 0, 0)';
       ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = 'rgb(255, 255, 255)';
-      ctx.beginPath();
-      ctx.moveTo(900, 500);
-      ctx.quadraticCurveTo(925, 350, 950, 500);
-      ctx.closePath();
-      ctx.fill();
 
-      zero.display();
-
-      var a = new PVector(100, 100);
-      var b = new PVector(50, 10);
-      var c = a.add(b);
       ctx.font = ' 100px Play'
-      //ctx.fillText(a.y, 100, 100);
+      ctx.fillText(zero, 100, 100);
 
     </script>
 
